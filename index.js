@@ -262,9 +262,9 @@ Resource.prototype.query = function (options) {
     applyPopulate(query, options, req);
     applySort(query, options, req);
 
-    if (self.options.filter) {
-      query = query.where(self.options.filter(req, res));
-      countQuery = countQuery.where(self.options.filter(req, res));
+    if (options.filter) {
+      query = query.where(options.filter(req, res));
+      countQuery = countQuery.where(options.filter(req, res));
     }
 
 
@@ -299,15 +299,15 @@ Resource.prototype.detail = function (options) {
 
   return function (req, res, next) {
     var find = {};
-    find[self.options.queryString] = req.params.id;
+    find[options.queryString] = req.params.id;
 
     var query = self.Model.findOne(find);
 
     applySelect(query, options, req);
     applyPopulate(query, options, req);
 
-    if (self.options.filter) {
-      query = query.where(self.options.filter(req, res));
+    if (options.filter) {
+      query = query.where(options.filter(req, res));
     }
 
     async.waterfall([
@@ -351,12 +351,12 @@ Resource.prototype.update = function (options) {
 
   return function (req, res, next) {
     var find = {};
-    find[self.options.queryString] = req.params.id;
+    find[options.queryString] = req.params.id;
 
     var query = self.Model.findOne(find);
 
-    if (self.options.filter) {
-      query = query.where(self.options.filter(req, res));
+    if (options.filter) {
+      query = query.where(options.filter(req, res));
     }
 
     query.exec(function (err, model) {
